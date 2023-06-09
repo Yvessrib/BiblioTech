@@ -16,6 +16,10 @@ public class Livro {
         this.fk_Editora_CNPJ = editoraCnpj;
     }
 
+    public Livro(int id) {
+        this.id = id;
+    }
+
     public String getTitulo() {
         return titulo;
     }

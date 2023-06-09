@@ -30,6 +30,7 @@ select * from livro;]]></console>
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="ba6d3b72-5566-4115-aeb8-df8b0ad19d4f" dataset="livraria.pedido_has_livro" active-filter-id="" />
     <filter-actions connection-id="ba6d3b72-5566-4115-aeb8-df8b0ad19d4f" dataset="livraria.livro_has_pedido" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">

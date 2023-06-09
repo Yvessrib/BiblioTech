@@ -2,6 +2,7 @@ package org.example.Tables;
 
 import org.example.Classes.Cliente;
 import org.example.Classes.Livro;
+import org.example.Classes.Pedido;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,32 +35,6 @@ public class LivroBD extends ConexãoBD {
                 pst.close();
             } catch (SQLException e) {
                 System.out.println("Erro de conexao " + e.getMessage());
-            }
-        }
-        return sucesso;
-    }
-
-    //------------------------DELETAR UM Livro NO DATABASE----------------------------
-    public boolean deleteLivro(String idLivro) {
-
-        connect();
-
-        String sql = "DELETE FROM livro WHERE idLivro=?";
-
-        try {
-            pst = connection.prepareStatement(sql);
-            pst.setString(1, idLivro);
-            pst.execute();
-            sucesso = true;
-        } catch (SQLException ex) {
-            System.out.println("Erro = " + ex.getMessage());
-            sucesso = false;
-        } finally {
-            try {
-                connection.close();
-                pst.close();
-            } catch (SQLException ex) {
-                System.out.println("Erro = " + ex.getMessage());
             }
         }
         return sucesso;
@@ -102,22 +77,30 @@ public class LivroBD extends ConexãoBD {
         }
     }
 
-    //------------------------ATUALIZAR O PREÇO DE UM LIVRO NO DATABASE----------------------------
-    public boolean updateNomeCliente(int idLivro, Double preco) {
+    public boolean selectLivroId(int Id_Livro) {
 
+        boolean verificado = false;
         connect();
 
-        String sql = "UPDATE livro SET preo=? WHERE idlivro=?";
-
+        String sql = "SELECT * FROM livro WHERE idLivro = ?";
         try {
+
             pst = connection.prepareStatement(sql);
-            pst.setDouble(1, preco);
-            pst.setInt(2, idLivro);
-            pst.execute();
-            sucesso = true;
+            pst.setInt(1, Id_Livro);
+            resultSet = pst.executeQuery();
+
+            while (resultSet.next()) {
+                Livro livroTemp = new Livro(resultSet.getString("Título"), resultSet.getString("AnoPubli"), resultSet.getDouble("Preco"),resultSet.getInt("idLivro"),resultSet.getInt("Editora_CNPJ"));
+                System.out.println("\nId = " + livroTemp.getId());
+                System.out.println("Título = " + livroTemp.getTitulo());
+                System.out.println("Ano de publicação = " + livroTemp.getAnoPublicacao());
+                System.out.println("Preco = " + livroTemp.getPreco());
+                System.out.println("CNPJ da editora = " + livroTemp.getFk_Editora_CNPJ());
+                System.out.println("---------------------------------");
+            }
         } catch (SQLException ex) {
             System.out.println("Erro = " + ex.getMessage());
-            sucesso = false;
+
         } finally {
             try {
                 connection.close();
@@ -126,7 +109,39 @@ public class LivroBD extends ConexãoBD {
                 System.out.println("Erro = " + ex.getMessage());
             }
         }
-        return sucesso;
+        return verificado;
+    }
+
+    public double selectLivroPreco(int Id_Livro) {
+
+        connect();
+
+        double preco = 0;
+        String sql = "SELECT * FROM livro where idLivro = ?";
+
+        try {
+
+            pst = connection.prepareStatement(sql);
+            pst.setInt(1, Id_Livro);
+            resultSet = pst.executeQuery();
+
+            while (resultSet.next()) {
+                Livro livroTemp = new Livro(resultSet.getString("Título"), resultSet.getString("AnoPubli"), resultSet.getDouble("Preco"),resultSet.getInt("idLivro"),resultSet.getInt("Editora_CNPJ"));
+                preco = livroTemp.getPreco();
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Erro = " + ex.getMessage());
+
+        } finally {
+            try {
+                connection.close();
+                pst.close();
+            } catch (SQLException ex) {
+                System.out.println("Erro = " + ex.getMessage());
+            }
+        }
+        return preco;
     }
 
 

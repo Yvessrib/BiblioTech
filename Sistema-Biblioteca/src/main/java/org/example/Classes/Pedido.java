@@ -2,23 +2,33 @@ package org.example.Classes;
 
 public class Pedido {
 
+    private int Pk_idPedido;
+    private String Fk_Cliente_CPF;
     private String dataPedido;
     private String statusPedido;
-    private int idPedido;
 
-    public Pedido(String dataPedido, String statusPedido) {
+    public Pedido(int pk_idPedido, String fk_Cliente_CPF, String dataPedido, String statusPedido) {
+        Pk_idPedido = pk_idPedido;
+        Fk_Cliente_CPF = fk_Cliente_CPF;
         this.dataPedido = dataPedido;
         this.statusPedido = statusPedido;
     }
 
-    /*
-    public void totalCompra() {
-        double totalcompra = 0;
-        for (int i = 0; i < .size(); i++) {
-            totalcompra += .get(i).getPreco();
-        }
+    public int getPk_idPedido() {
+        return Pk_idPedido;
     }
-     */
+
+    public void setPk_idPedido(int pk_idPedido) {
+        Pk_idPedido = pk_idPedido;
+    }
+
+    public String getFk_Cliente_CPF() {
+        return Fk_Cliente_CPF;
+    }
+
+    public void setFk_Cliente_CPF(String fk_Cliente_CPF) {
+        Fk_Cliente_CPF = fk_Cliente_CPF;
+    }
 
     public String getDataPedido() {
         return dataPedido;
