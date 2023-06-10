@@ -74,8 +74,8 @@ public class Main {
                     if (clienteBD.selectClienteCPF(cpf)) {
 
                         System.out.println("SEJA BEM VINDO " + clienteBD.selectClienteNome(cpf));
+                        flag2 = true;
                         while (flag2) {
-
                             System.out.println("\n-------------------- MENU --------------------");
                             System.out.println("1 - Gerenciar pedidos");
                             System.out.println("2 - Detalhes dos pedidos");
@@ -88,6 +88,7 @@ public class Main {
                             switch (op) {
 
                                 case 1:
+                                    flag3 = true;
                                     while (flag3) {
                                         System.out.println("\n-------------------- MENU --------------------");
                                         System.out.println("1 - Criar pedido");
@@ -161,7 +162,7 @@ public class Main {
                                     }
                                     break;
                                 case 2:
-
+                                    flag4 = true;
                                     while(flag4) {
                                         System.out.println("\n-------------------- MENU --------------------");
                                         System.out.println("1 - Pedidos desta conta");
