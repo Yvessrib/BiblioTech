@@ -13,7 +13,7 @@ public class PedidoBD extends ConexãoBD {
     public boolean insertPedido(Pedido pedido) {
 
         connect();
-        String sql = "INSERT INTO pedido (idPedido,Cliente_CPF,dataPedido,'Processando') values (?,?,?,?)";
+        String sql = "INSERT INTO pedido (idPedido,Cliente_CPF,dataPedido,statusPedido) values (?,?,?,?)";
 
         try {
             pst = connection.prepareStatement(sql);
@@ -37,7 +37,8 @@ public class PedidoBD extends ConexãoBD {
         return sucesso;
     }
 
-    public boolean selectPedidoId(int Id_Pedido) {
+    //------------------------BUSCAR PEDIDO ESPECIFICO NO DATABASE----------------------------
+    public boolean selectPedidoId(int Id_Pedido,String CPF) {
 
         boolean verificado = false;
         connect();
@@ -49,7 +50,7 @@ public class PedidoBD extends ConexãoBD {
             resultSet = statement.executeQuery(sql); //ref. a tabela resultante da busca
             while (resultSet.next()) {
                 Pedido pedidoTemp = new Pedido(resultSet.getInt("idPedido"), resultSet.getString("Cliente_CPF"), resultSet.getString("dataPedido"),resultSet.getString("statusPedido"));
-                if (pedidoTemp.getPk_idPedido() == Id_Pedido) {
+                if (pedidoTemp.getPk_idPedido() == Id_Pedido && pedidoTemp.getFk_Cliente_CPF().equals(CPF)) {
                     verificado = true;
                 }
             }
@@ -67,7 +68,7 @@ public class PedidoBD extends ConexãoBD {
         return verificado;
     }
 
-    //------------------------BUSCAR UM REGISTRO NO DATABASE----------------------------
+    //------------------------BUSCAR PEDIDOS RELACIONADOS A UM CLIENTE NO DATABASE----------------------------
     public boolean selectPedidosIDs(String Cliente_CPF) {
 
         connect();
@@ -101,7 +102,8 @@ public class PedidoBD extends ConexãoBD {
         return verificado;
     }
 
-    public void selectInfosPedidos(int idPedido) {
+    //------------------------BUSCAR INFOS ESPECIFICAS DE UM PEDIDO NO DATABASE----------------------------
+    public void selectInfosPedidos(int idPedido, String cpf) {
 
         connect();
 
@@ -116,10 +118,11 @@ public class PedidoBD extends ConexãoBD {
             resultSet = pst.executeQuery();
             while (resultSet.next()) {
                 Pedido pedidoTemp = new Pedido(resultSet.getInt("idPedido"), resultSet.getString("Cliente_CPF"), resultSet.getString("dataPedido"), resultSet.getString("statusPedido"));
-                System.out.println("Data do pedido: " + pedidoTemp.getDataPedido());
-                System.out.println("Status do pedido: " + pedidoTemp.getStatusPedido());
+                if (pedidoTemp.getFk_Cliente_CPF().equals(cpf)) {
+                    System.out.println("Data do pedido: " + pedidoTemp.getDataPedido());
+                    System.out.println("Status do pedido: " + pedidoTemp.getStatusPedido());
+                }
             }
-
         } catch (SQLException ex) {
             System.out.println("Erro = " + ex.getMessage());
         } finally {
@@ -132,16 +135,17 @@ public class PedidoBD extends ConexãoBD {
         }
     }
 
-    //------------------------DELETAR UM CLIENTE NO DATABASE----------------------------
-    public boolean deletePedido(int idPedido) {
+    //------------------------DELETAR UM PEDIDO ESPECIFICO NO DATABASE----------------------------
+    public boolean deletePedido(int idPedido,String cpf) {
 
         connect();
 
-        String sql = "DELETE FROM pedido WHERE idPedido=?";
+        String sql = "DELETE FROM pedido WHERE idPedido=? AND Cliente_CPF=?";
 
         try {
             pst = connection.prepareStatement(sql);
             pst.setInt(1, idPedido);
+            pst.setString(2,cpf);
             pst.execute();
             sucesso = true;
         } catch (SQLException ex) {
@@ -158,15 +162,17 @@ public class PedidoBD extends ConexãoBD {
         return sucesso;
     }
 
-    public boolean updateStatusPedido(int Id_pedido) {
+    //------------------------ATUALIZAR STATUS DE UM PEDIDO ESPECIFICO NO DATABASE----------------------------
+    public boolean updateStatusPedido(int Id_pedido,String cpf) {
 
         connect();
         boolean validado;
-        String sql = "UPDATE pedido SET statusPedido='Pagamento realizado' WHERE idPedido=?";
+        String sql = "UPDATE pedido SET statusPedido='Pagamento realizado' WHERE idPedido=? AND Cliente_CPF=?";
 
         try {
             pst = connection.prepareStatement(sql);
             pst.setInt(1, Id_pedido);
+            pst.setString(2,cpf);
             pst.execute();
             validado = true;
         } catch (SQLException ex) {

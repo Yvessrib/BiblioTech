@@ -1,16 +1,14 @@
 package org.example.Tables;
 
+//Imports necessários
 import org.example.Classes.Cliente;
-
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class ClienteBD extends ConexãoBD{
 
     boolean sucesso = false;
 
-    //------------------------INSERIR NOVO REGISTRO NO DATABASE----------------------------
+    //------------------------INSERIR NOVO REGISTRO DE CLIENTE NO DATABASE----------------------------
     public boolean insertCliente(Cliente cliente){
 
         connect();
@@ -38,6 +36,7 @@ public class ClienteBD extends ConexãoBD{
         return sucesso;
     }
 
+    //------------------------SELECIONAR CLIENTE POR CPF NO DATABASE----------------------------
     public boolean selectClienteCPF(String cpf) {
 
             connect();
@@ -67,6 +66,7 @@ public class ClienteBD extends ConexãoBD{
             return verificado;
     }
 
+    //------------------------SELECIONAR NOME DE CLIENTE ESPECÌFICO NO DATABASE----------------------------
     public String selectClienteNome(String cpf) {
 
         connect();

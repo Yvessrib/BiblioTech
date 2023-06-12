@@ -1,17 +1,13 @@
 package org.example.Tables;
 
-import org.example.Classes.Cliente;
 import org.example.Classes.Livro;
-import org.example.Classes.Pedido;
-
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class PedidoHasLivroBD extends ConexãoBD{
 
     boolean sucesso = false;
 
-    //------------------------INSERIR NOVO LIVRO NO PEDIDO NO DATABASE----------------------------
+    //------------------------INSERIR NOVA RELAÇÂO NA TABELA N:M DE PEDIDOS E LIVROS----------------------------
     public boolean insertLivroOnPedido(int Id_Livro,int Id_Pedido) {
 
         connect();
@@ -37,7 +33,7 @@ public class PedidoHasLivroBD extends ConexãoBD{
         return sucesso;
     }
 
-    //------------------------DELETAR UM CLIENTE NO DATABASE----------------------------
+    //------------------------DELETAR RELAÇÂO ESPECIFICA NA TABELA N:M DE PEDIDOS E LIVROS----------------------------
     public boolean deleteLivroFromPedido(int Id_Livro,int Id_Pedido) {
 
         connect();
@@ -64,6 +60,7 @@ public class PedidoHasLivroBD extends ConexãoBD{
         return verifica;
     }
 
+    //------------------------BUSCAR LIVROS RELACIONADOS A UM PEDIDO ESPECIFICO NO DATABASE----------------------------
     public int[] selectLivrosPedido(int idPedido) {
 
         int[] idLivros = new int[30];
@@ -96,5 +93,31 @@ public class PedidoHasLivroBD extends ConexãoBD{
             }
         }
         return idLivros;
+    }
+
+    //------------------------DELETAR TODAS AS RELAÇÕES DE UM PEDIDO ESPECIFICO----------------------------
+    public boolean deleteFromPedidoHasLivro(int idPedido) {
+
+        connect();
+
+        String sql = "DELETE FROM pedido_has_livro WHERE Pedido_idPedido=?";
+
+        try {
+            pst = connection.prepareStatement(sql);
+            pst.setInt(1, idPedido);
+            pst.execute();
+            sucesso = true;
+        } catch (SQLException ex) {
+            System.out.println("Erro = " + ex.getMessage());
+            sucesso = false;
+        } finally {
+            try {
+                connection.close();
+                pst.close();
+            } catch (SQLException ex) {
+                System.out.println("Erro = " + ex.getMessage());
+            }
+        }
+        return sucesso;
     }
 }

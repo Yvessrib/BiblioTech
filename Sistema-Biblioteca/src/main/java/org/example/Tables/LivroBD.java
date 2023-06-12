@@ -40,8 +40,7 @@ public class LivroBD extends ConexãoBD {
         return sucesso;
     }
 
-
-    //------------------------BUSCAR UM REGISTRO NO DATABASE----------------------------
+    //------------------------BUSCAR LIVROS NO DATABASE----------------------------
     public void selectLivro() {
         ArrayList<Livro> listaDeLivros = new ArrayList<>();
 
@@ -77,6 +76,7 @@ public class LivroBD extends ConexãoBD {
         }
     }
 
+    //------------------------BUSCAR LIVRO ESPECIFICO NO DATABASE----------------------------
     public boolean selectLivroId(int Id_Livro) {
 
         boolean verificado = false;
@@ -91,12 +91,9 @@ public class LivroBD extends ConexãoBD {
 
             while (resultSet.next()) {
                 Livro livroTemp = new Livro(resultSet.getString("Título"), resultSet.getString("AnoPubli"), resultSet.getDouble("Preco"),resultSet.getInt("idLivro"),resultSet.getInt("Editora_CNPJ"));
-                System.out.println("\nId = " + livroTemp.getId());
-                System.out.println("Título = " + livroTemp.getTitulo());
-                System.out.println("Ano de publicação = " + livroTemp.getAnoPublicacao());
-                System.out.println("Preco = " + livroTemp.getPreco());
-                System.out.println("CNPJ da editora = " + livroTemp.getFk_Editora_CNPJ());
-                System.out.println("---------------------------------");
+                if(livroTemp.getId() == Id_Livro){
+                    verificado = true;
+                }
             }
         } catch (SQLException ex) {
             System.out.println("Erro = " + ex.getMessage());
@@ -112,6 +109,46 @@ public class LivroBD extends ConexãoBD {
         return verificado;
     }
 
+    //------------------------BUSCAR LIVRO ESPECÍFICO NO DATABASE----------------------------
+    public boolean selectLivroFromId(int Id_Livro) {
+
+        boolean verificado = false;
+        connect();
+
+        String sql = "SELECT * FROM livro WHERE idLivro = ?";
+        try {
+
+            pst = connection.prepareStatement(sql);
+            pst.setInt(1, Id_Livro);
+            resultSet = pst.executeQuery();
+
+            while (resultSet.next()) {
+                Livro livroTemp = new Livro(resultSet.getString("Título"), resultSet.getString("AnoPubli"), resultSet.getDouble("Preco"),resultSet.getInt("idLivro"),resultSet.getInt("Editora_CNPJ"));
+                if(livroTemp.getId() == Id_Livro){
+                    System.out.println("Id = " + livroTemp.getId());
+                    System.out.println("Título = " + livroTemp.getTitulo());
+                    System.out.println("Ano de publicação = " + livroTemp.getAnoPublicacao());
+                    System.out.println("Preco = " + livroTemp.getPreco());
+                    System.out.println("CNPJ da editora = " + livroTemp.getFk_Editora_CNPJ());
+                    System.out.println("---------------------------------");
+                    verificado = true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro = " + ex.getMessage());
+
+        } finally {
+            try {
+                connection.close();
+                pst.close();
+            } catch (SQLException ex) {
+                System.out.println("Erro = " + ex.getMessage());
+            }
+        }
+        return verificado;
+    }
+
+    //------------------------BUSCAR PREÇO DE LIVRO ESPECIFICO NO DATABASE----------------------------
     public double selectLivroPreco(int Id_Livro) {
 
         connect();
