@@ -18,7 +18,11 @@ CREATE SCHEMA IF NOT EXISTS `livraria` DEFAULT CHARACTER SET utf8 ;
 USE `livraria` ;
 
 insert into editora values ('Globo',123);
+insert into editora values ('Hasbro',05285);
+insert into editora values ('Casa Marcelo',7590);
 insert into livro values (1,'Nárnia',1990,35.5,123);
+insert into livro values (2,'Hobbit',1937,70.00,7590);
+insert into livro values (3,'DUNE',1965,42.01,05285);
 
 select * from livro;
 
@@ -101,3 +105,6 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+

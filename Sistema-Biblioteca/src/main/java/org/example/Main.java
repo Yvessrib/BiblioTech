@@ -256,7 +256,7 @@ public class Main {
                                                             TotalPreco += livroBD.selectLivroPreco(idLivros[i]); //Somando o preço de cala livro do pedido
                                                         }
                                                     }
-                                                    System.out.println("\nTotal valor do pedido: " + formatador.format(TotalPreco));
+                                                    System.out.println("\nTotal valor do pedido: R$ " + formatador.format(TotalPreco));
                                                 } else {
                                                     System.out.println("\nID Inválido");
                                                 }
